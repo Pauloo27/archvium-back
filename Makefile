@@ -20,6 +20,9 @@ dist:
 pack: dist
 	upx ./$(BINARY_NAME)
 
+lint:
+	revive -formatter friendly -config revive.toml ./... 
+
 # fiber dev (with hot reload)
 dev:
 	fiber dev
