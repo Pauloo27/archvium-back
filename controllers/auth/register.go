@@ -38,9 +38,8 @@ func Register(ctx *fiber.Ctx) error {
 			return utils.AsError(ctx, http.StatusConflict, utils.Fmt(
 				"%s already in use", utils.GetDuplicatedKey(err),
 			))
-		} else {
-			return utils.AsError(ctx, http.StatusInternalServerError, err.Error())
 		}
+		return utils.AsError(ctx, http.StatusInternalServerError, err.Error())
 	}
 
 	// TODO: create user home folder

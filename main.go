@@ -52,11 +52,9 @@ func main() {
 		Expiration: 1 * time.Minute,
 		KeyGenerator: func(c *fiber.Ctx) string {
 			if utils.EnvBool("IS_PROXIED") {
-				fmt.Println(c.Get("x-forwarded-for"))
 				return c.Get("x-forwarded-for")
-			} else {
-				return c.IP()
 			}
+			return c.IP()
 		},
 	}))
 

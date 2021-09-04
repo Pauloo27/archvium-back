@@ -35,9 +35,8 @@ func Login(ctx *fiber.Ctx) error {
 	if err != nil {
 		if errors.Is(gorm.ErrRecordNotFound, err) {
 			return utils.AsError(ctx, http.StatusNotFound, "Invalid password or username")
-		} else {
-			return utils.AsError(ctx, http.StatusInternalServerError, err.Error())
 		}
+		return utils.AsError(ctx, http.StatusInternalServerError, err.Error())
 	}
 
 	token := jwt.New(jwt.SigningMethodHS256)
