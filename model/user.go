@@ -1,6 +1,8 @@
 package model
 
 import (
+	"os"
+
 	"github.com/Pauloo27/archvium/utils"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -14,6 +16,11 @@ type User struct {
 	IsAdmin  bool   `gorm:"not null"`
 }
 
+func (u *User) AfterCreate(db *gorm.DB) error {
+	folderPath := utils.EnvString("STORAGE_ROOT") + "/" + u.Username
+	return os.MkdirAll(folderPath, 0700)
+}
+
 func (u *User) BeforeSave(db *gorm.DB) error {
 	u.Password = utils.HashPassword(u.Password)
 	return nil
@@ -21,8 +28,8 @@ func (u *User) BeforeSave(db *gorm.DB) error {
 
 func (u *User) ToDto() fiber.Map {
 	return fiber.Map{
-		"id": u.ID,
-		"username": u.Username,
+		"id":        u.ID,
+		"username":  u.Username,
 		"createdAt": u.CreatedAt,
 		"deletedAt": u.DeletedAt,
 		"updatedAt": u.UpdatedAt,
